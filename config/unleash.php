@@ -13,8 +13,8 @@ return [
 
     // Allow the Unleash API response to be cached.
     'cache' => [
-        'isEnabled' => false,
-        'ttl' => 3600,
+        'isEnabled' => env('UNLEASH_CACHE_ENABLED', false),
+        'ttl' => env('UNLEASH_CACHE_TTL', 3600),
     ],
 
     // Mapping of strategies used to guard features on Unleash. The default strategies are already

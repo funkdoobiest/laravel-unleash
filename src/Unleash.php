@@ -91,12 +91,12 @@ class Unleash
 
             $params = Arr::get($strategyData, 'parameters', []);
 
-            if (!$strategy->isEnabled($params, $this->request)) {
-                return false;
+            if ($strategy->isEnabled($params, $this->request)) {
+                return true;
             }
         }
 
-        return $isEnabled;
+        return false;
     }
 
     public function isFeatureDisabled(string $name): bool
@@ -107,10 +107,12 @@ class Unleash
     private function fetchFeatures(): array
     {
         try {
-            $response = $this->client->get('/api/client/features');
+
+            $response = $this->client->get('client/features');
             $data = json_decode((string) $response->getBody(), true);
 
             return Arr::get($data, 'features', []);
+
         } catch (\InvalidArgumentException $e) {
             return [];
         }

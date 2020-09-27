@@ -26,7 +26,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->publishes(
             [
-            $this->getConfigPath() => config_path('unleash.php'),
+                $this->getConfigPath() => config_path('unleash.php'),
             ]
         );
 
@@ -59,6 +59,6 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function getConfigPath(): string
     {
-        return __DIR__ . '/../config/unleash.php';
+        return __DIR__.'/../config/unleash.php';
     }
 }
