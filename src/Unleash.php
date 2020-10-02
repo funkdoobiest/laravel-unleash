@@ -23,7 +23,7 @@ class Unleash
 
     private $features = [];
 
-    public function __construct(ClientInterface $client, Cache $cache, Config $config, Request $request)
+    public function __construct(Cache $cache, Config $config, Request $request)
     {
         $this->cache = $cache;
         $this->config = $config;
@@ -32,6 +32,8 @@ class Unleash
         if (!$this->config->get('unleash.isEnabled')) {
             return;
         }
+
+        $this->initClient();
 
         if ($this->config->get('unleash.cache.isEnabled')) {
             $this->features = $this->cache->remember(
