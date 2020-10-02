@@ -4,7 +4,6 @@ namespace MikeFrancis\LaravelUnleash;
 
 use Illuminate\Support\Facades\Http;
 
-use GuzzleHttp\ClientInterface;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Http\Request;
@@ -123,7 +122,12 @@ class Unleash
 
             return Arr::get($data, 'features', []);
 
-        } catch (\InvalidArgumentException $e) {
+        } catch (\Exception $e) {
+
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
+
             return [];
         }
     }
