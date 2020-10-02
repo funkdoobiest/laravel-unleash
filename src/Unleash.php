@@ -2,7 +2,7 @@
 
 namespace MikeFrancis\LaravelUnleash;
 
-use function GuzzleHttp\json_decode;
+use Illuminate\Support\Facades\Http;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -25,7 +25,6 @@ class Unleash
 
     public function __construct(ClientInterface $client, Cache $cache, Config $config, Request $request)
     {
-        $this->client = $client;
         $this->cache = $cache;
         $this->config = $config;
         $this->request = $request;
@@ -45,6 +44,15 @@ class Unleash
         } else {
             $this->features = $this->fetchFeatures();
         }
+    }
+
+    protected function initClient()
+    {
+        $this->client = Http::baseUrl($this->config->get('unleash.url'))
+            ->withHeaders([
+                'UNLEASH-APPNAME' => $this->config->get('app.env'),
+                'UNLEASH-INSTANCEID' => $this->config->get('unleash.instanceId'),
+            ]);
     }
 
     public function getFeatures(): array
@@ -109,7 +117,7 @@ class Unleash
         try {
 
             $response = $this->client->get('client/features');
-            $data = json_decode((string) $response->getBody(), true);
+            $data = $response->json();
 
             return Arr::get($data, 'features', []);
 
