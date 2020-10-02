@@ -5,6 +5,7 @@ return [
     // This should be the base URL, do not include /api or anything else.
     'url' => env('UNLEASH_URL'),
     'instanceId' => env('UNLEASH_INSTANCE_ID'),
+    'timeout' => env('UNLEASH_TIMEOUT', 10),
 
     // Globally control whether Unleash is enabled or disabled.
     // If not enabled, no API requests will be made and all "enabled" checks will return `false` and

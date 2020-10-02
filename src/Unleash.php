@@ -50,6 +50,7 @@ class Unleash
     protected function initClient()
     {
         $this->client = Http::baseUrl($this->config->get('unleash.url'))
+            ->timeout($this->config->get('unleash.timeout'))
             ->withHeaders([
                 'UNLEASH-APPNAME' => $this->config->get('app.env'),
                 'UNLEASH-INSTANCEID' => $this->config->get('unleash.instanceId'),
